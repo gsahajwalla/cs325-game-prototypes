@@ -58,7 +58,7 @@ window.onload = function() {
       ball.body.gravity.y = 300;
       ball.body.velocity.setTo(200, 200);
       //adds bounce to the ball
-      ball.body.bounce.setTo(1.2,1.2);
+      ball.body.bounce.setTo(1,1);
       //the ball bounces off walls
       ball.body.collideWorldBounds = true;
 
