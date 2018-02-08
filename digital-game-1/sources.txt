@@ -1,2 +1,4 @@
 background www.spriteland.com
-ground http://pixelartmaker.com/art/016a86657cd8151
+ground paint 
+person Phaser.com 
+
