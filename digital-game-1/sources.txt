@@ -2,4 +2,6 @@ background www.spriteland.com
 ground made with paint 
 person Phaser.com 
 hole made with paint
-
+ball phaser examples
+sound phaser examples
+To look up how certain methods works read phaser examples and documentation
