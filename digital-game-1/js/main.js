@@ -1,5 +1,5 @@
 
-var background, ground, platform, player, cursors;
+var background, ground, platform, player, cursors, hole;
 window.onload = function() {
 
 
@@ -10,6 +10,7 @@ window.onload = function() {
         game.load.image('background', 'assets/background.png');
         game.load.image('ground', 'assets/ground.png');
         //game.load.image('platform', 'assets/platform.png');
+        game.load.image('hole','assets/hole.png');
         //this player sprite is taken from phaser tutorial
         game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 
@@ -48,6 +49,8 @@ window.onload = function() {
       player.animations.add('right', [5, 6, 7, 8], 10, true);
       player.body.gravity.y = 500;
 
+      //this is the hole for the ball to enter in
+      hole = game.add.sprite(game.width - 50,0,'hole');
 
     }
 
