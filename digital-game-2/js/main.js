@@ -4,7 +4,8 @@ var game = new Phaser.Game(2000,620, Phaser.Canvas,'game');
 var GameState1 = {
     preload: function() {
         this.load.spritesheet('chicken','assets/chicken.png');
-        this.load.image('background','assets/background.png')
+        this.load.image('background','assets/background.png');
+        this.load.image('seed','assets/seed.png');
     },
     create: function() {
 
@@ -23,30 +24,31 @@ var GameState1 = {
         this.chicken.love = 100;//this is the amount of love the chicken currently has (a custom property of the field)
         //enable physics for the chicken 
         this.game.physics.arcade.enable(this.chicken);
-        /*
-        //tweens for moving the chicken
-        this.chicken.moveRight = this.game.add.tween(this.chicken).to({x: this.chicken.x + 50 });
-        this.chicken.moveLeft = this.game.add.tween(this.chicken).to({x: this.chicken.x - 50 });
-        this.chicken.moveUp = this.game.add.tween(this.chicken).to({y: this.chicken.y - 50 });
-        this.chicken.moveDown = this.game.add.tween(this.chicken).to({y: this.chicken.y + 50 });
-        this.chicken.moveRight.start();
-        this.chicken.moveDown.start();
-        this.chicken.moveUp.start();
-        */
-        //this.chicken.lifespan = 10000;
-        //this.chicken.animations.add('left',[0],10,true);
+        
+
+        //this is the seed 
+        //this.seeds = this.game.add.group();
         console.log(this);
 
 
         //allows input by keyboard
         this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        //the food for the chicken
+        this.seed;
+        let a = this;//so that this represnts gamestate1 and not world
+        this.game.input.onTap.add(function() {
+            a.seed = a.game.add.sprite( Math.random() * 1030, (Math.random() * (355)) + 250,'seed');
+            a.seed.lifespan = 10000;
+            console.log(a);
+        });
     },
     update: function() {
         
         //movements for the chicken
         this.chicken.body.velocity.x = 0;
         this.chicken.body.velocity.y = 0;
-        
+
         if(this.cursors.left.isDown) {
             //this.chicken.moveLeft.start();
              this.chicken.body.velocity.x = -50;
@@ -63,6 +65,8 @@ var GameState1 = {
         else if(this.cursors.down.isDown) {
             this.chicken.body.velocity.y = 50;
         }
+
+        
     }
 };
 
