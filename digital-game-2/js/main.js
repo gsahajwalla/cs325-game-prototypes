@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800,600, Phaser.Canvas);
+var game = new Phaser.Game(800,600, Phaser.Canvas,'game');
 
 //this is a game state
 var GameState1 = {
