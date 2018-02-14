@@ -206,7 +206,7 @@ var GameState1 = {
             //this.game.state.restart();
             this.game.state.destroy();
         }
-        else if(this.chicken.health <= 0 && this.chicken.love <= 0) {
+        else if(this.chicken.health <= 0 || this.chicken.love <= 0) {
             this.chicken.kill();
             alert("Your chicken died because you did not take care of it. You kept your chicken alive for " + this.game.time.totalElapsedSeconds() + "seconds. Referesh to play again");
             //this.game.time.reset();
