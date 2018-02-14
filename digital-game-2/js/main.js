@@ -184,7 +184,11 @@ var GameState1 = {
     render: function() {
         this.game.debug.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 1055, 32);
         this.game.debug.text('Health:' + this.chicken.health,1055,50);
-         this.game.debug.text('Love:' + this.chicken.love,1055,68);
+        this.game.debug.text('Love:' + this.chicken.love,1055,68);
+        let a = 100;
+        for(let i = 0; i < this.interact.length; i++) {
+            this.game.debug.text(this.interact[i].key + ": " + this.interact[i].amount,1055,(a + (i * 18)));
+        }
 
     },
 
