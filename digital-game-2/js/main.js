@@ -1,6 +1,8 @@
+ 
 var game = new Phaser.Game(2000,620, Phaser.Canvas,'game');
 
 //this is a game state
+
 var GameState1 = {
     preload: function() {
         this.load.spritesheet('chicken','assets/chicken.png');
@@ -48,7 +50,7 @@ var GameState1 = {
         this.pet.input.pixelPerfect = true;
         //pets chicken to increase love on being clicked
         this.pet.events.onInputDown.add(this.petChicken,this);
-        this.pet.amount = 10;
+        this.pet.amount = 12;
         this.pet.health = 0;
         this.pet.love = 10;
 
@@ -72,8 +74,8 @@ var GameState1 = {
         this.chicks.input.pixelPerfect = true;
         this.chicks.events.onInputDown.add(this.giveChick,this);
         this.chicks.amount = 5;
-        this.chicks.health = 70;
-        this.chicks.love = -35;
+        this.chicks.health = 50;
+        this.chicks.love = -50;
 
         //this is the sleep button, increases health drastically 
         this.sleep = this.game.add.sprite(600,560,'sleep');
@@ -91,7 +93,7 @@ var GameState1 = {
 
         //these two variables give details if the chicken is sleeping and eating 
         this.sleeping = false;
-        this.eating = false;
+       //this.eating = false;
 
 
     },
@@ -101,23 +103,27 @@ var GameState1 = {
         this.chicken.body.velocity.x = 0;
         this.chicken.body.velocity.y = 0;
 
-        if(this.cursors.left.isDown) {
-            //this.chicken.moveLeft.start();
-             this.chicken.body.velocity.x = -50;
-             this.chicken.scale.setTo(-.2,.2);
-        }
-        else if(this.cursors.right.isDown) {
-            this.chicken.body.velocity.x = 50;
-            this.chicken.scale.setTo(.2,.2);
-        }
-        else if(this.cursors.up.isDown) {
-            this.chicken.body.velocity.y = -50;
+        if(this.sleeping == false) {
+            if(this.cursors.left.isDown) {
+                //this.chicken.moveLeft.start();
+                 this.chicken.body.velocity.x = -50;
+                 this.chicken.scale.setTo(-.2,.2);
+            }
+            else if(this.cursors.right.isDown) {
+                this.chicken.body.velocity.x = 50;
+                this.chicken.scale.setTo(.2,.2);
+            }
+            else if(this.cursors.up.isDown) {
+                this.chicken.body.velocity.y = -50;
 
-        }
-        else if(this.cursors.down.isDown) {
-            this.chicken.body.velocity.y = 50;
+            }
+            else if(this.cursors.down.isDown) {
+                this.chicken.body.velocity.y = 50;
+            }
         }
 
+        this.checkAlive();//keeps checking if chicken is alive
+        this.getOld();//constantly reduces health and love each by 0.1
         
     },
     giveSeed: function(sprite) {
@@ -125,12 +131,14 @@ var GameState1 = {
             this.seed = this.game.add.sprite( Math.random() * 1030, (Math.random() * (310)) + 250,'seed');
             this.seed.lifespan = 10000;
             sprite.amount -= 1;
+            
         }
     },
     petChicken: function(sprite) {
         if(sprite.amount >= 1) {
             console.log("pet chicken");
             sprite.amount -= 1;
+            this.wakeUp();
         }
     },
     giveChick: function(sprite) {
@@ -141,10 +149,39 @@ var GameState1 = {
         }
     },
     chickenSleep: function(sprite) {
-        if(sprite.amount >= 1) {
+        if(sprite.amount >= 1 && this.sleeping == false) {
             console.log("sleep chicken");
             sprite.amount -= 1;
+            this.sleeping = true;
         }
+    },
+    clearAlpha: function(sprite) {
+        sprite.alpha = 1;
+    },
+    wakeUp: function() {
+        this.sleeping = false;
+    },
+    render: function() {
+        this.game.debug.text('Elapsed seconds: ' + this.game.time.totalElapsedSeconds(), 1050, 32);
+        this.game.debug.text('Health:' + this.chicken.health,1050,50);
+         this.game.debug.text('Love:' + this.chicken.love,1050,68);
+
+    },
+    checkAlive: function() {
+        if(this.chicken.health <= 0 && this.chicken.love <= 0) {
+            this.chicken.kill();
+            alert("Your chicken died because you did not take care of it. You kept your chicken alive for" + this.game.time.totalElapsedSeconds() + "seconds");
+            this.game.state.restart();
+        }
+        else if ((this.chicken.health <= 0 || this.chicken.love <= 0) && this.sleeping == true) {
+            this.chicken.kill();
+            alert("Your chicken died because you did not wake it up. You kept your chicken alive for" + this.game.time.totalElapsedSeconds() + "seconds");
+            this.game.state.restart();
+        }
+    },
+    getOld: function() {
+        this.chicken.love -= 0.01;
+        this.chicken.health -= 0.01;
     }
 };
 
