@@ -6,6 +6,8 @@ var GameState1 = {
         this.load.spritesheet('chicken','assets/chicken.png');
         this.load.image('background','assets/background.png');
         this.load.image('seed','assets/seed.png');
+        this.load.image('pet','assets/pet.png');
+        this.load.image('seeds','assets/seeds.png');
     },
     create: function() {
 
@@ -42,6 +44,13 @@ var GameState1 = {
             a.seed.lifespan = 10000;
             console.log(a);
         });
+
+
+        //this is the pet button 
+        this.pet =  this.game.add.sprite(300,560,'pet');
+
+        //this is the seeds button
+        this.seeds = this.game.add.sprite(400,560,'seeds');
     },
     update: function() {
         
