@@ -2,3 +2,5 @@ Chicken made by my dormate
 chicks phaser examples
 sleep z's https://thumb1.shutterstock.com/display_pic_with_logo/3819668/418938184/stock-vector-zzz-sleeping-night-sign-icon-418938184.jpg
 how to show time from https://phaser.io/examples/v2/time/elapsed-seconds
+
+so if i do food kill then kills all the seeds on the screen so only possible to make one food at a time instead of all
