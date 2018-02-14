@@ -108,16 +108,21 @@ var GameState1 = {
     update: function() {
         
         //this part checks for overlaps
-        if(this.seed != undefined && this.chick != undefined) {
+        if(this.seed != undefined || this.chick != undefined) {
+            /*
             if(game.physics.arcade.collide(this.chicken,this.seed)) {
                 console.log('in here');
                 this.updateLife(this.seeds);
                 this.seed.kill();
-            } 
+            } */
             if(this.chicken.overlap(this.chick)) {
-                this.updateLife(this.chicks);
+                this.chicken.body.velocity.x = 10;
                 this.chick.kill();
+                this.updateLife(this.chicks);
+                
             }
+    
+            //game.physics.arcade.overlap(this.chicken, this.chick,kills);
        }
 
         //movements for the chicken
@@ -127,7 +132,7 @@ var GameState1 = {
         if(this.sleeping == false) {
             if(this.cursors.left.isDown) {
                 //this.chicken.moveLeft.start();
-                 this.chicken.body.velocity.x = -50;
+                 this.chicken.body.velocity.x = -100;
                  this.chicken.scale.setTo(-.2,.2);
             }
             else if(this.cursors.right.isDown) {
@@ -217,6 +222,9 @@ var GameState1 = {
         
             this.chicken.health += sprite1.health;
             this.chicken.love += sprite1.love;
+    },
+    kills: function() {
+        this.chick.kill();
     }
 };
 
