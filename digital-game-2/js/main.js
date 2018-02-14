@@ -16,6 +16,8 @@ var GameState1 = {
     },
     create: function() {
 
+
+
         //enables physics
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -23,14 +25,7 @@ var GameState1 = {
         this.background = this.game.add.sprite(0,0,'background');
 
 
-        //this is the chicken/pet
-        this.chicken = this.game.add.sprite(800,400,'chicken');
-        this.chicken.scale.setTo(.2,.2);
-        this.chicken.anchor.setTo(.5);
-        this.chicken.health = 100;//this is the chicken health
-        this.chicken.love = 100;//this is the amount of love the chicken currently has (a custom property of the field)
-        //enable physics for the chicken 
-        this.game.physics.arcade.enable(this.chicken);
+        
         
 
         //this is the seed 
@@ -66,6 +61,7 @@ var GameState1 = {
         this.seeds.health = 10;
         this.seeds.love = 0;
 
+        this.seed;
 
         //this button is to feed the chicken chicks (adds alot of health but also will drastically decrease the love)
         this.chicks = this.game.add.sprite(500,560,'chicks');
@@ -77,6 +73,8 @@ var GameState1 = {
         this.chicks.health = 50;
         this.chicks.love = -50;
 
+        this.check;
+
         //this is the sleep button, increases health drastically 
         this.sleep = this.game.add.sprite(600,560,'sleep');
         this.sleep.inputEnabled = true;
@@ -85,6 +83,16 @@ var GameState1 = {
         this.sleep.amount = 5;
         this.sleep.health = 15;
         this.sleep.love = 15;
+
+
+        //this is the chicken/pet
+        this.chicken = this.game.add.sprite(800,400,'chicken');
+        this.chicken.scale.setTo(.2,.2);
+        this.chicken.anchor.setTo(.5);
+        this.chicken.health = 100;//this is the chicken health
+        this.chicken.love = 100;//this is the amount of love the chicken currently has (a custom property of the field)
+        //enable physics for the chicken 
+        this.game.physics.arcade.enable(this.chicken);
 
         //this array is an array of all the buttons
         this.interact = [this.seeds,this.pet,this.chicks,this.sleep];
@@ -99,6 +107,19 @@ var GameState1 = {
     },
     update: function() {
         
+        //this part checks for overlaps
+        if(this.seed != undefined && this.chick != undefined) {
+            if(game.physics.arcade.collide(this.chicken,this.seed)) {
+                console.log('in here');
+                this.updateLife(this.seeds);
+                this.seed.kill();
+            } 
+            if(this.chicken.overlap(this.chick)) {
+                this.updateLife(this.chicks);
+                this.chick.kill();
+            }
+       }
+
         //movements for the chicken
         this.chicken.body.velocity.x = 0;
         this.chicken.body.velocity.y = 0;
@@ -124,6 +145,8 @@ var GameState1 = {
 
         this.checkAlive();//keeps checking if chicken is alive
         this.getOld();//constantly reduces health and love each by 0.1
+
+        //
         
     },
     giveSeed: function(sprite) {
@@ -131,7 +154,7 @@ var GameState1 = {
             this.seed = this.game.add.sprite( Math.random() * 1030, (Math.random() * (310)) + 250,'seed');
             this.seed.lifespan = 10000;
             sprite.amount -= 1;
-            
+            this.game.physics.arcade.enable(this.seed);
         }
     },
     petChicken: function(sprite) {
@@ -139,6 +162,7 @@ var GameState1 = {
             console.log("pet chicken");
             sprite.amount -= 1;
             this.wakeUp();
+            this.updateLife(sprite);
         }
     },
     giveChick: function(sprite) {
@@ -146,6 +170,7 @@ var GameState1 = {
             this.chick = this.game.add.sprite( Math.random() * 1030, (Math.random() * (310)) + 250,'chick');
             this.chick.lifespan = 10000;
             sprite.amount -= 1;
+            this.game.physics.arcade.enable(this.chick);
         }
     },
     chickenSleep: function(sprite) {
@@ -153,6 +178,7 @@ var GameState1 = {
             console.log("sleep chicken");
             sprite.amount -= 1;
             this.sleeping = true;
+            this.updateLife(sprite);
         }
     },
     clearAlpha: function(sprite) {
@@ -168,20 +194,29 @@ var GameState1 = {
 
     },
     checkAlive: function() {
-        if(this.chicken.health <= 0 && this.chicken.love <= 0) {
+        if ((this.chicken.health <= 0 || this.chicken.love <= 0) && this.sleeping == true) {
             this.chicken.kill();
-            alert("Your chicken died because you did not take care of it. You kept your chicken alive for" + this.game.time.totalElapsedSeconds() + "seconds");
-            this.game.state.restart();
+            alert("Your chicken died because you did not wake it up. You kept your chicken alive for " + this.game.time.totalElapsedSeconds() + "seconds. Referesh to play again");
+            //this.game.time.reset();
+            //this.game.state.restart();
+            this.game.state.destroy();
         }
-        else if ((this.chicken.health <= 0 || this.chicken.love <= 0) && this.sleeping == true) {
+        else if(this.chicken.health <= 0 && this.chicken.love <= 0) {
             this.chicken.kill();
-            alert("Your chicken died because you did not wake it up. You kept your chicken alive for" + this.game.time.totalElapsedSeconds() + "seconds");
-            this.game.state.restart();
+            alert("Your chicken died because you did not take care of it. You kept your chicken alive for " + this.game.time.totalElapsedSeconds() + "seconds. Referesh to play again");
+            //this.game.time.reset();
+            this.game.state.destroy();
         }
     },
     getOld: function() {
-        this.chicken.love -= 0.01;
-        this.chicken.health -= 0.01;
+        this.chicken.love -= 0.02;
+        this.chicken.health -= 0.02;
+    },
+    updateLife: function(sprite1) {
+        //update health and love depending on which sprite the chicken collides with
+        
+            this.chicken.health += sprite1.health;
+            this.chicken.love += sprite1.love;
     }
 };
 
