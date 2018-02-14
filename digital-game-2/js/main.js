@@ -9,7 +9,7 @@ var GameState1 = {
         this.load.image('background','assets/background.png');
         this.load.image('seed','assets/seed.png');
         this.load.image('chick','assets/chick.png');
-        this.load.image('pet','assets/pet.png');
+        this.load.image('pet','assets/Pet.png');
         this.load.image('seeds','assets/seeds.png');
         this.load.image('chicks','assets/chicks.png');
         this.load.image('sleep','assets/sleep.jpg');
