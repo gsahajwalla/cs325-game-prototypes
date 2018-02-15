@@ -7,8 +7,8 @@ var GameState1 = {
     preload: function() {
         this.load.spritesheet('chicken','assets/chicken.png');
         this.load.image('background','assets/background.png');
-        // this.load.image('seed','assets/seed.png');
-        // this.load.image('chick','assets/chick.png');
+        this.load.image('seed','assets/seed.png');
+        this.load.image('chick','assets/chick.png');
         this.load.image('pet','assets/Pet.png');
         this.load.image('seeds','assets/seeds.png');
         this.load.image('chicks','assets/chicks.png');
@@ -88,6 +88,10 @@ var GameState1 = {
         //give seed on being clicked
         this.seeds.events.onInputDown.add(this.giveSeed,this);
         
+        //ths seed 
+        this.seed = this.game.add.sprite(Math.random() * 1030, (Math.random() * (310)) + 250,'seed');
+        this.seed.lifespan = 5000;
+        this.game.physics.arcade.enable(this.seed);
 
 
         //this button is to feed the chicken chicks (adds alot of health but also will drastically decrease the love)
@@ -143,6 +147,21 @@ var GameState1 = {
             this.catch();
 
         }
+
+        //for the seed
+        if(this.seed.alive == false) {
+            this.seed = this.game.add.sprite(Math.random() * 1030, (Math.random() * (310)) + 250,'seed');
+            this.seed.lifespan = 5000;
+            this.game.physics.arcade.enable(this.seed);
+        }
+
+        if(this.game.physics.arcade.overlap(this.chicken, this.seed)) {
+            this.seed.kill();
+            this.updateLife(this.seeds);
+
+        }
+
+
         //check for border collision and wall collison
         this.game.physics.arcade.collide(this.chicken,this.border);
         this.game.physics.arcade.collide(this.chicken,this.wall);
