@@ -140,7 +140,8 @@ var GameState1 = {
 
         if(this.game.physics.arcade.overlap(this.chicken, this.insect)) {
             this.insect.kill();
-            
+            this.catch();
+
         }
         //check for border collision and wall collison
         this.game.physics.arcade.collide(this.chicken,this.border);
@@ -252,6 +253,18 @@ var GameState1 = {
         //update health and love depending on which sprite the chicken collides with
             this.chicken.health += sprite.health;
             this.chicken.love += sprite.love;
+    },
+    catch: function() {
+        let index = Math.trunc(Math.random() * 4);
+        let as = Math.trunc(Math.random() * 2);
+        let amount = Math.trunc(Math.random() * 4);
+        console.log(index + " " + as + " " + amount);
+        if(as == 0) {
+            this.interact[index].amount -= amount;
+        }
+        else {
+            this.interact[index].amount += amount;
+        }
     }
 };
 
