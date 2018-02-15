@@ -15,6 +15,7 @@ var GameState1 = {
         this.load.image('sleep','assets/sleep.jpg');
         this.load.image('border', 'assets/border.png');
         this.load.image('wall','assets/wall.png');
+        this.load.image('insect', 'assets/insect.png');
     },
 
     create: function() {
@@ -38,6 +39,11 @@ var GameState1 = {
         this.wall.body.immovable = true;
 
 
+        //this is the insect for the chicken to catch
+        this.insect = this.game.add.sprite(Math.random() * 1030, (Math.random() * (310)) + 250,'insect');
+        this.insect.lifespan = 10000;
+        this.game.physics.arcade.enable(this.insect);
+
         //this is the chicken/pet
         this.chicken = this.game.add.sprite(800,400,'chicken');
         this.chicken.scale.setTo(.2,.2);
@@ -48,7 +54,7 @@ var GameState1 = {
         this.game.physics.arcade.enable(this.chicken);
         //makes sure chicken dosent go off screen
         this.chicken.body.collideWorldBounds = true;
-        
+
         
 
 
@@ -126,6 +132,16 @@ var GameState1 = {
 
     update: function() {
         
+        if(this.insect.alive == false) {
+            this.insect = this.game.add.sprite(Math.random() * 1030, (Math.random() * (310)) + 250,'insect');
+            this.insect.lifespan = 10000;
+            this.game.physics.arcade.enable(this.insect);
+        }
+
+        if(this.game.physics.arcade.overlap(this.chicken, this.insect)) {
+            this.insect.kill();
+            
+        }
         //check for border collision and wall collison
         this.game.physics.arcade.collide(this.chicken,this.border);
         this.game.physics.arcade.collide(this.chicken,this.wall);
