@@ -13,6 +13,8 @@ var GameState1 = {
         this.load.image('seeds','assets/seeds.png');
         this.load.image('chicks','assets/chicks.png');
         this.load.image('sleep','assets/sleep.jpg');
+        this.load.image('border', 'assets/border.png');
+        this.load.image('wall','assets/wall.png');
     },
 
     create: function() {
@@ -25,6 +27,16 @@ var GameState1 = {
         //this is the background 
         this.background = this.game.add.sprite(0,0,'background');
 
+        //this is the border to stop the chicken from flying 
+        this.border = this.game.add.sprite(0,240,'border');
+        this.game.physics.arcade.enable(this.border);
+        this.border.body.immovable = true;
+
+        //this is the wall for the world
+        this.wall = this.game.add.sprite(1050,241,'wall');
+        this.game.physics.arcade.enable(this.wall);
+        this.wall.body.immovable = true;
+
 
         //this is the chicken/pet
         this.chicken = this.game.add.sprite(800,400,'chicken');
@@ -34,6 +46,9 @@ var GameState1 = {
         this.chicken.love = 100;//this is the amount of love the chicken currently has (a custom property of the field)
         //enable physics for the chicken 
         this.game.physics.arcade.enable(this.chicken);
+        //makes sure chicken dosent go off screen
+        this.chicken.body.collideWorldBounds = true;
+        
         
 
 
@@ -105,10 +120,15 @@ var GameState1 = {
        //this.eating = false;
 
 
+
+
     },
 
     update: function() {
         
+        //check for border collision and wall collison
+        this.game.physics.arcade.collide(this.chicken,this.border);
+        this.game.physics.arcade.collide(this.chicken,this.wall);
 
         //movements for the chicken
         this.chicken.body.velocity.x = 0;
