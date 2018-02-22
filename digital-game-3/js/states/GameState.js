@@ -29,6 +29,13 @@ var GameState = {
 		this.ground.body.immovable = true;
 
 
+		// the platforms
+    	this.platforms = this.game.add.group();
+    	this.platforms.enableBody = true;
+    	this.ledge = this.platforms.create(500,500,'platforms');
+    	this.ledge.body.immovable = true;
+
+
 		//this is the player 
 		this.player = this.game.add.sprite(0, 0,'dude');
 		this.game.physics.arcade.enable(this.player);
@@ -42,26 +49,29 @@ var GameState = {
     	this.player.animations.add('right', [5, 6, 7, 8], 10, true);
 
     	//this is the ghost 
-    	this.ghost = this.game.add.sprite(0,0,'ghost');
+    	this.ghost = this.game.add.sprite(Math.random() * 3000,Math.random() * 120,'ghost');
+    	//this.ghost.lifespan = 15000;
     	this.game.physics.arcade.enable(this.ghost);
     	this.ghost.body.collideWorldBounds = true;
 
     	// ghost animation 
     	this.ghost.animations.add('right',[3,4,5],3,true);
     	this.ghost.animations.add('left',[9,10,11],3,true);
-
+    	this.ghost.animations.add('straight',[6,7,8],4,true);
+    	this.game.time.events.repeat(Phaser.Timer.SECOND * 2, 10000, this.ghostMove, this);
 
     	//camera follows player
     	this.game.camera.follow(this.player);
 
-    	// the platforms
-    	this.platforms = this.game.add.group();
-    	this.platforms.enableBody = true;
-    	this.ledge = this.platforms.create(500,500,'platforms');
-    	this.ledge.body.immovable = true;
-
+    	
     	//added keyboard controls incase player does not have a mouse
     	this.controls = this.game.input.keyboard.createCursorKeys();
+
+    	// this.timef = this.game.time.elapsed;
+    	// if(this.timef >= 10) {
+    	// 	this.timef = 0;
+    	// 	this.ghostMove();
+    	// }
 	},
 
 	update: function() {
@@ -75,7 +85,8 @@ var GameState = {
 		//sets the player velocity 
 		this.player.body.velocity.x = 0;
 
-		this.ghost.animations.play('right');
+		//this.ghost.animations.play('straight');
+		//this.ghostMove();
 
 		//mouse controls and keyboard 
 		if((this.game.input.mousePointer.middleButton.isDown || this.controls.up.isDown) && this.player.body.touching.down) {
@@ -95,6 +106,29 @@ var GameState = {
 			this.player.frame = 4;
 		}
 	},
-
+	ghostMove: function() {
+		var move = Math.trunc(Math.random() * 1000);
+		console.log(move);
+		if (move % 3 == 0) {
+			this.ghost.body.velocity.x = -400;
+			this.ghost.body.velocity.y = 5;
+			this.ghost.animations.play('left');
+		}
+		else if (move % 5 == 0){
+			this.ghost.body.velocity.x = 400;
+			this.ghost.body.velocity.y = -10;
+			this.ghost.animations.play('right');
+		}
+		else if (move % 7 == 0) {
+			this.ghost.body.velocity.x = -400;
+			this.ghost.body.velocity.y = 5;
+			this.ghost.animations.play('left');
+		}
+		else if (move % 13 == 0) {
+			this.ghost.body.velocity.x = 400;
+			this.ghost.body.velocity.y = -10;
+			this.ghost.animations.play('right');
+		}
+	}
 
 };
