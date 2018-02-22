@@ -4,6 +4,7 @@ var GameState = {
 		this.game.load.image('background','assets/images/background.jpg');
 		this.game.load.image('ground', 'assets/images/ground.png');
 		this.game.load.spritesheet('dude','assets/images/dude.png',32,48);
+		this.game.load.image('platforms','assets/images/platforms.png');
 	},
 
 	create: function() {
@@ -42,6 +43,12 @@ var GameState = {
     	//camera follows player
     	this.game.camera.follow(this.player);
 
+    	// the platforms
+    	this.platforms = this.game.add.group();
+    	this.platforms.enableBody = true;
+    	this.ledge = this.platforms.create(500,500,'platforms');
+    	this.ledge.body.immovable = true;
+
     	//added keyboard controls incase player does not have a mouse
     	this.controls = this.game.input.keyboard.createCursorKeys();
 	},
@@ -51,20 +58,23 @@ var GameState = {
 		//check is the player collides with the ground 
 		this.game.physics.arcade.collide(this.player,this.ground);
 
+		//checks for collision between player and platforms
+		this.game.physics.arcade.collide(this.player,this.platforms);
+
 		//sets the player velocity 
 		this.player.body.velocity.x = 0;
 
 		//mouse controls and keyboard 
 		if((this.game.input.mousePointer.middleButton.isDown || this.controls.up.isDown) && this.player.body.touching.down) {
-			this.player.body.velocity.y = -200;
+			this.player.body.velocity.y = -400;
 		}
 
 		if((this.game.input.mousePointer.leftButton.isDown || this.controls.left.isDown)) {
-			this.player.body.velocity.x = -200;
+			this.player.body.velocity.x = -400;
 			this.player.animations.play('left');
 		}
 		else if ((this.game.input.mousePointer.rightButton.isDown || this.controls.right.isDown)) {
-			this.player.body.velocity.x = 200;
+			this.player.body.velocity.x = 1000;
 			this.player.animations.play('right');
 		}
 		else {
