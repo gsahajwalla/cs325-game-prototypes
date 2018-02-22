@@ -37,9 +37,20 @@ var GameState = {
 	},
 
 	update: function() {
-		
+
 		//check is the player collides with the ground 
 		this.game.physics.arcade.collide(this.player,this.ground);
+
+		//sets the player velocity 
+		this.player.body.velocity.x = 0;
+
+		//mouse controls 
+		if(this.game.input.mousePointer.middleButton.isDown) {
+			this.player.body.velocity.y = -100;
+		}
+		// else {
+		// 	this.player.body.velocity.setTo(0,500);
+		// }
 	},
 
 
