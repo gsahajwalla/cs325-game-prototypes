@@ -40,7 +40,7 @@ var GameState = {
     	this.ledge()
     	this.ledges = this.platforms.create(10000,10000,'platforms');
     	this.ledges.body.immovable = true;
-    	this.ledge.lifespan = 10000;
+    	this.ledge.lifespan = 15000;
 
 
 		//this is the player 
@@ -49,7 +49,7 @@ var GameState = {
 		this.player.poweredUp = false; //if the player is powered up to fly
 
 		//physics for the player
-		this.player.body.gravity.y = 300;
+		this.player.body.gravity.y = 500;
 		this.player.body.collideWorldBounds = true;
 
 		//player animations
@@ -66,7 +66,8 @@ var GameState = {
     	this.ghost.animations.add('right',[3,4,5],3,true);
     	this.ghost.animations.add('left',[9,10,11],3,true);
     	this.ghost.animations.add('straight',[6,7,8],4,true);
-    	this.game.time.events.repeat(Phaser.Timer.SECOND * 2, 10000, this.ghostMove, this);
+    	this.ghostMove();
+    	this.game.time.events.repeat(Phaser.Timer.SECOND * 2, 100000, this.ghostMove, this);
 
     	//camera follows player
     	this.game.camera.follow(this.player);
@@ -77,8 +78,8 @@ var GameState = {
 
 
     	//this is the part to give player a special flying ability for 5 secs every 50 secs if the player collects a star
-    	this.game.time.events.repeat(Phaser.Timer.SECOND * 10, 10000, this.stars, this);
-    	this.game.time.events.repeat(Phaser.Timer.SECOND * 12, 10000, this.ledge, this);
+    	this.game.time.events.repeat(Phaser.Timer.SECOND * 35, 10000, this.stars, this);
+    	this.game.time.events.repeat(Phaser.Timer.SECOND * 10, 10000, this.ledge, this);
 
     	// this.timef = this.game.time.elapsed;
     	// if(this.timef >= 10) {
@@ -131,15 +132,15 @@ var GameState = {
 		//mouse controls and keyboard 
 		if(this.player.poweredUp == false) {
 			if((this.game.input.mousePointer.middleButton.isDown || this.controls.up.isDown) && this.player.body.touching.down) {
-				this.player.body.velocity.y = -1000;
+				this.player.body.velocity.y = -485;
 			}
 
 			if((this.game.input.mousePointer.leftButton.isDown || this.controls.left.isDown)) {
-				this.player.body.velocity.x = -1000;
+				this.player.body.velocity.x = -400;
 				this.player.animations.play('left');
 			}
 			else if ((this.game.input.mousePointer.rightButton.isDown || this.controls.right.isDown)) {
-				this.player.body.velocity.x = 1000;
+				this.player.body.velocity.x = 400;
 				this.player.animations.play('right');
 			}
 			else {
@@ -161,30 +162,52 @@ var GameState = {
 	ghostMove: function() {
 		var move = Math.trunc(Math.random() * 1000);
 		//console.log(move);
-		if (move % 3 == 0) {
+		// if (move % 3 == 0) {
+		// 	this.ghost.body.velocity.x = -400;
+		// 	this.ghost.body.velocity.y = 5;
+		// 	this.ghost.animations.play('left');
+		// }
+		// else if (move % 5 == 0){
+		// 	this.ghost.body.velocity.x = 400;
+		// 	this.ghost.body.velocity.y = -10;
+		// 	this.ghost.animations.play('right');
+		// }
+		// else if (move % 7 == 0) {
+		// 	this.ghost.body.velocity.x = -400;
+		// 	this.ghost.body.velocity.y = 5;
+		// 	this.ghost.animations.play('left');
+		// }
+		// else if (move % 13 == 0) {
+		// 	this.ghost.body.velocity.x = 400;
+		// 	this.ghost.body.velocity.y = -10;
+		// 	this.ghost.animations.play('right');
+		// }
+		if (this.ghost.x >= 2900) {
+			this.ghost.body.velocity.x = -400;
+			this.ghost.body.velocity.y = 5;
+			this.ghost.animations.play('left');
+		}
+		else if (this.ghost.x <= 80) {
+			this.ghost.body.velocity.x = 400;
+			this.ghost.body.velocity.y = -20;
+			this.ghost.animations.play('right');
+		}
+		else {
+			if (move % 2 == 0) {
 			this.ghost.body.velocity.x = -400;
 			this.ghost.body.velocity.y = 5;
 			this.ghost.animations.play('left');
 		}
 		else if (move % 5 == 0){
 			this.ghost.body.velocity.x = 400;
-			this.ghost.body.velocity.y = -10;
+			this.ghost.body.velocity.y = -20;
 			this.ghost.animations.play('right');
 		}
-		else if (move % 7 == 0) {
-			this.ghost.body.velocity.x = -400;
-			this.ghost.body.velocity.y = 5;
-			this.ghost.animations.play('left');
-		}
-		else if (move % 13 == 0) {
-			this.ghost.body.velocity.x = 400;
-			this.ghost.body.velocity.y = -10;
-			this.ghost.animations.play('right');
 		}
 	},
 	stars: function() {
 		this.star = this.game.add.sprite(Math.random() * 3000, Math.random() * 600,'star');
-		this.star.lifespan = 5000;
+		this.star.lifespan = 10000;
 		this.game.physics.arcade.enable(this.star);
 	},
 	ledge: function() {
@@ -195,7 +218,7 @@ var GameState = {
     		let x = ax * 500 ;
     		let y = ay * 100;
     		this.ledges = this.platforms.create(x,y,'platforms');
-    		this.ledges.lifespan = 10000;
+    		this.ledges.lifespan = 15000;
     		this.ledges.body.immovable = true;
     	}
 	}
