@@ -18,7 +18,7 @@ var GameState = {
 		//this is the background of the game
 		this.background = this.game.add.sprite(0,0,'background');
 		//this.background.scale.setTo(1,2);
-		//this.world.resize(3000,600);
+		this.world.resize(3000,650);
 
 
 		//this is the ground
@@ -38,6 +38,9 @@ var GameState = {
 		//player animations
 		this.player.animations.add('left', [0, 1, 2, 3], 10, true);
     	this.player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+    	//camera follows player
+    	this.game.camera.follow(this.player);
 
     	//added keyboard controls incase player does not have a mouse
     	this.controls = this.game.input.keyboard.createCursorKeys();
