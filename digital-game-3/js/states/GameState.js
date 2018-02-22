@@ -119,7 +119,7 @@ var GameState = {
 
 		//checks to see if the player should still be powered up since a power up only lasts 5 seconds
 		this.end = Math.trunc(this.game.time.totalElapsedSeconds());
-		if(this.end - this.start >= 5) {
+		if(this.end - this.start >= 8) {
 			this.player.poweredUp = false;
 		}
 
