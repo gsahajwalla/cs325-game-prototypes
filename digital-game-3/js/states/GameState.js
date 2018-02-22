@@ -154,7 +154,7 @@ var GameState = {
 			this.player.frame = 4;
 
 			if(this.game.input.mousePointer.isDown) {
-				this.game.physics.arcade.moveToPointer(this.player,400);
+				this.game.physics.arcade.moveToPointer(this.player,500);
 			}
 
 		}
