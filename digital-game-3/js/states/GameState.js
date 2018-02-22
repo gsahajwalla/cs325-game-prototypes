@@ -6,6 +6,7 @@ var GameState = {
 		this.game.load.spritesheet('dude','assets/images/dude.png',32,48);
 		this.game.load.image('platforms','assets/images/platforms.png');
 		this.game.load.spritesheet('ghost','assets/images/ghost.png',48,64);
+		this.game.load.image('star','assets/images/star.png');
 	},
 
 	create: function() {
@@ -39,6 +40,7 @@ var GameState = {
 		//this is the player 
 		this.player = this.game.add.sprite(0, 0,'dude');
 		this.game.physics.arcade.enable(this.player);
+		this.player.poweredUp = false; //if the player is powered up to fly
 
 		//physics for the player
 		this.player.body.gravity.y = 300;
@@ -67,6 +69,9 @@ var GameState = {
     	//added keyboard controls incase player does not have a mouse
     	this.controls = this.game.input.keyboard.createCursorKeys();
 
+
+    	//this is the part to give player a special flying ability for 5 secs every 50 secs if the player collects a star
+    	this.game.time.events.repeat(Phaser.Timer.SECOND * 10, 10000, this.stars, this);
     	// this.timef = this.game.time.elapsed;
     	// if(this.timef >= 10) {
     	// 	this.timef = 0;
@@ -82,6 +87,21 @@ var GameState = {
 		//checks for collision between player and platforms
 		this.game.physics.arcade.collide(this.player,this.platforms);
 
+		if(this.game.physics.arcade.collide(this.player, this.star)) {
+			this.star.kill();
+			this.player.poweredUp = true;
+			this.start = Math.trunc(this.game.time.totalElapsedSeconds());
+			this.player.animations.stop();
+			this.player.frame = 4;
+			console.log(this.start);
+		}
+
+		//checks to see if the player should still be powered up
+		this.end = Math.trunc(this.game.time.totalElapsedSeconds());
+		if(this.end - this.start >= 5) {
+			this.player.poweredUp = false;
+		}
+
 		//sets the player velocity 
 		this.player.body.velocity.x = 0;
 
@@ -89,26 +109,38 @@ var GameState = {
 		//this.ghostMove();
 
 		//mouse controls and keyboard 
-		if((this.game.input.mousePointer.middleButton.isDown || this.controls.up.isDown) && this.player.body.touching.down) {
-			this.player.body.velocity.y = -400;
-		}
+		if(this.player.poweredUp == false) {
+			if((this.game.input.mousePointer.middleButton.isDown || this.controls.up.isDown) && this.player.body.touching.down) {
+				this.player.body.velocity.y = -1000;
+			}
 
-		if((this.game.input.mousePointer.leftButton.isDown || this.controls.left.isDown)) {
-			this.player.body.velocity.x = -400;
-			this.player.animations.play('left');
+			if((this.game.input.mousePointer.leftButton.isDown || this.controls.left.isDown)) {
+				this.player.body.velocity.x = -1000;
+				this.player.animations.play('left');
+			}
+			else if ((this.game.input.mousePointer.rightButton.isDown || this.controls.right.isDown)) {
+				this.player.body.velocity.x = 1000;
+				this.player.animations.play('right');
+			}
+			else {
+				this.player.animations.stop();
+				this.player.frame = 4;
+			}
 		}
-		else if ((this.game.input.mousePointer.rightButton.isDown || this.controls.right.isDown)) {
-			this.player.body.velocity.x = 1000;
-			this.player.animations.play('right');
-		}
-		else {
+		//if the player is powered up gives a new set of controls
+		else if (this.player.poweredUp == true) {
 			this.player.animations.stop();
 			this.player.frame = 4;
+
+			if(this.game.input.mousePointer.isDown) {
+				this.game.physics.arcade.moveToPointer(this.player,400);
+			}
+
 		}
 	},
 	ghostMove: function() {
 		var move = Math.trunc(Math.random() * 1000);
-		console.log(move);
+		//console.log(move);
 		if (move % 3 == 0) {
 			this.ghost.body.velocity.x = -400;
 			this.ghost.body.velocity.y = 5;
@@ -129,6 +161,11 @@ var GameState = {
 			this.ghost.body.velocity.y = -10;
 			this.ghost.animations.play('right');
 		}
+	},
+	stars: function() {
+		this.star = this.game.add.sprite(Math.random() * 3000, Math.random() * 600,'star');
+		this.star.lifespan = 5000;
+		this.game.physics.arcade.enable(this.star);
 	}
 
 };
