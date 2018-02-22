@@ -17,7 +17,7 @@ var GameState = {
 
 		//this is the background of the game
 		this.background = this.game.add.sprite(0,0,'background');
-		//this.background.scale.setTo(1,2);
+		this.background.scale.setTo(2.5,1);
 		this.world.resize(3000,650);
 
 
