@@ -32,9 +32,15 @@ var GameState = {
 
 		// the platforms
     	this.platforms = this.game.add.group();
+    	//this.platforms.lifespan = 10000;
     	this.platforms.enableBody = true;
-    	this.ledge = this.platforms.create(500,500,'platforms');
-    	this.ledge.body.immovable = true;
+
+    	// the ledges are generated
+    	this.ledges;
+    	this.ledge()
+    	this.ledges = this.platforms.create(10000,10000,'platforms');
+    	this.ledges.body.immovable = true;
+    	this.ledge.lifespan = 10000;
 
 
 		//this is the player 
@@ -72,6 +78,8 @@ var GameState = {
 
     	//this is the part to give player a special flying ability for 5 secs every 50 secs if the player collects a star
     	this.game.time.events.repeat(Phaser.Timer.SECOND * 10, 10000, this.stars, this);
+    	this.game.time.events.repeat(Phaser.Timer.SECOND * 12, 10000, this.ledge, this);
+
     	// this.timef = this.game.time.elapsed;
     	// if(this.timef >= 10) {
     	// 	this.timef = 0;
@@ -87,6 +95,18 @@ var GameState = {
 		//checks for collision between player and platforms
 		this.game.physics.arcade.collide(this.player,this.platforms);
 
+		// if player and ghost collide game is over
+		if (this.game.physics.arcade.collide(this.player,this.ghost)) {
+			this.ghost.kill();
+			alert("You have 'CAUGHT' the ghost")
+			this.game.state.restart();
+		}
+
+		// // checks if ledges exists
+		// if(this.ledges.alive == false) {
+		// 	this.ledge();
+		// }
+
 		if(this.game.physics.arcade.collide(this.player, this.star)) {
 			this.star.kill();
 			this.player.poweredUp = true;
@@ -96,7 +116,7 @@ var GameState = {
 			console.log(this.start);
 		}
 
-		//checks to see if the player should still be powered up
+		//checks to see if the player should still be powered up since a power up only lasts 5 seconds
 		this.end = Math.trunc(this.game.time.totalElapsedSeconds());
 		if(this.end - this.start >= 5) {
 			this.player.poweredUp = false;
@@ -127,7 +147,7 @@ var GameState = {
 				this.player.frame = 4;
 			}
 		}
-		//if the player is powered up gives a new set of controls
+		//if the player is powered up gives a new set of controls 
 		else if (this.player.poweredUp == true) {
 			this.player.animations.stop();
 			this.player.frame = 4;
@@ -166,6 +186,18 @@ var GameState = {
 		this.star = this.game.add.sprite(Math.random() * 3000, Math.random() * 600,'star');
 		this.star.lifespan = 5000;
 		this.game.physics.arcade.enable(this.star);
+	},
+	ledge: function() {
+		for(var i = 0; i < 10; i++) {
+    		let ax = Math.trunc(Math.random() * 6);
+    		let ay = Math.trunc(Math.random() * 6);
+    		console.log('hello');
+    		let x = ax * 500 ;
+    		let y = ay * 100;
+    		this.ledges = this.platforms.create(x,y,'platforms');
+    		this.ledges.lifespan = 10000;
+    		this.ledges.body.immovable = true;
+    	}
 	}
 
 };
