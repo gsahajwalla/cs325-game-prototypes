@@ -8,8 +8,12 @@ var GameState = {
 
 	create: function() {
 
+
 		//enabling the game physics 
 		this.game.physics.startSystem(Phaser.Physics.Arcade);
+
+		//to stop the menu from showing up when right click is down 
+		this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
 		//this is the background of the game
 		this.background = this.game.add.sprite(0,0,'background');
@@ -34,6 +38,9 @@ var GameState = {
 		//player animations
 		this.player.animations.add('left', [0, 1, 2, 3], 10, true);
     	this.player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+    	//added keyboard controls incase player does not have a mouse
+    	this.controls = this.game.input.keyboard.createCursorKeys();
 	},
 
 	update: function() {
@@ -44,13 +51,23 @@ var GameState = {
 		//sets the player velocity 
 		this.player.body.velocity.x = 0;
 
-		//mouse controls 
-		if(this.game.input.mousePointer.middleButton.isDown) {
-			this.player.body.velocity.y = -100;
+		//mouse controls and keyboard 
+		if((this.game.input.mousePointer.middleButton.isDown || this.controls.up.isDown) && this.player.body.touching.down) {
+			this.player.body.velocity.y = -200;
 		}
-		// else {
-		// 	this.player.body.velocity.setTo(0,500);
-		// }
+
+		if((this.game.input.mousePointer.leftButton.isDown || this.controls.left.isDown)) {
+			this.player.body.velocity.x = -200;
+			this.player.animations.play('left');
+		}
+		else if ((this.game.input.mousePointer.rightButton.isDown || this.controls.right.isDown)) {
+			this.player.body.velocity.x = 200;
+			this.player.animations.play('right');
+		}
+		else {
+			this.player.animations.stop();
+			this.player.frame = 4;
+		}
 	},
 
 
