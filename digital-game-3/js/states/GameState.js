@@ -5,6 +5,7 @@ var GameState = {
 		this.game.load.image('ground', 'assets/images/ground.png');
 		this.game.load.spritesheet('dude','assets/images/dude.png',32,48);
 		this.game.load.image('platforms','assets/images/platforms.png');
+		this.game.load.spritesheet('ghost','assets/images/ghost.png',48,64);
 	},
 
 	create: function() {
@@ -40,6 +41,16 @@ var GameState = {
 		this.player.animations.add('left', [0, 1, 2, 3], 10, true);
     	this.player.animations.add('right', [5, 6, 7, 8], 10, true);
 
+    	//this is the ghost 
+    	this.ghost = this.game.add.sprite(0,0,'ghost');
+    	this.game.physics.arcade.enable(this.ghost);
+    	this.ghost.body.collideWorldBounds = true;
+
+    	// ghost animation 
+    	this.ghost.animations.add('right',[3,4,5],3,true);
+    	this.ghost.animations.add('left',[9,10,11],3,true);
+
+
     	//camera follows player
     	this.game.camera.follow(this.player);
 
@@ -63,6 +74,8 @@ var GameState = {
 
 		//sets the player velocity 
 		this.player.body.velocity.x = 0;
+
+		this.ghost.animations.play('right');
 
 		//mouse controls and keyboard 
 		if((this.game.input.mousePointer.middleButton.isDown || this.controls.up.isDown) && this.player.body.touching.down) {
