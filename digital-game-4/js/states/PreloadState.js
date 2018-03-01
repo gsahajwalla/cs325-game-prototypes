@@ -25,6 +25,8 @@ var PreloadState = {
     	// this is for the GameState 
     	this.game.load.image('grounds','assets/images/grounds.png');
     	this.game.load.spritesheet('horse','assets/images/horse.png',64,64,12);
+    	this.game.load.image('line','assets/images/line.png');
+    	this.game.load.image('finish','assets/images/finish.png');
 	},
 	create: function() {
 		this.game.state.start('HomeState');
