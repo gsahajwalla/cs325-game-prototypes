@@ -2,11 +2,11 @@ var BootState = {
 
 	//Game Screen Settings 
 	init: function() {
-		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		//this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.scale.pageAlignHorizontally = true;
 		this.scale.pageAlignVertically = true;
 	},
-	Preload: function() {
+	preload: function() {
 		this.game.load.image('loadingBar', 'assets/images/bar.png');
 		this.game.load.image('logo', 'assets/images/logo.png');
 	},
