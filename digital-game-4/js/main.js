@@ -1,5 +1,6 @@
 var game = new Phaser.Game(800,640, Phaser.CANVAS,'game');
-
+game.choice = 0;
+//var choice;
 game.state.add('GameState', GameState);
 game.state.add('HomeState', HomeState);
 game.state.add('PreloadState', PreloadState);
