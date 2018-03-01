@@ -13,6 +13,26 @@ var GameState = {
 		this.standings = [];
 		this.positions = [];
 		this.standing();
+
+		// this is the ground
+		this.grounds = this.game.add.sprite(0,0,'grounds');
+
+		// these are the horses
+		this.h1 = this.game.add.sprite(05,220,'horse');
+		this.h1.animations.add('walk',[3,4,5]);
+		this.h1.animations.play('walk',9,true);
+
+		this.h2 = this.game.add.sprite(05,320,'horse');
+		this.h2.animations.add('walk',[3,4,5]);
+		this.h2.animations.play('walk',9,true);
+
+		this.h3 = this.game.add.sprite(05,420,'horse');
+		this.h3.animations.add('walk',[3,4,5]);
+		this.h3.animations.play('walk',9,true);
+
+		this.h4 = this.game.add.sprite(05,520,'horse');
+		this.h4.animations.add('walk',[3,4,5]);
+		this.h4.animations.play('walk',9,true);
 	},
 
 	update: function() {
