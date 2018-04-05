@@ -19,6 +19,8 @@ var GameState = {
 
 		// this is the player character
 		this.person = this.game.add.sprite(0,595,'person', 0);
+		this.person.lives = 5;
+		this.person.timepenalty = 0;
 		this.person.scale.setTo(.75);
 		this.game.physics.arcade.enable(this.person);
 		this.person.body.collideWorldBounds = true;
@@ -39,7 +41,7 @@ var GameState = {
 		this.guy1.animations.add('up', [2,6,10,14], 4, true);
 		//this.guy1.animations.play('left');
 		// guy 2
-		this.guy2 = this.game.add.sprite(this.world.width - (10 * 32),60,'guy',0);
+		this.guy2 = this.game.add.sprite(1024 - (10 * 32),60,'guy',0);
 		this.guy2.animations.add('left', [1,5,9,13], 4, true);
 		this.guy2.animations.add('right', [3,7,11,15], 4, true);
 		this.guy2.animations.add('down', [0,4,8,12], 4, true);
@@ -53,7 +55,7 @@ var GameState = {
 		this.guy3.animations.add('up', [2,6,10,14], 4, true);
 		//this.guy3.animations.play('left');
 		//guy 4
-		this.guy4 = this.game.add.sprite(this.world.width - (10 * 32),32 * 6,'guy',0);
+		this.guy4 = this.game.add.sprite(1024 - (10 * 32),32 * 6,'guy',0);
 		this.guy4.animations.add('left', [1,5,9,13], 4, true);
 		this.guy4.animations.add('right', [3,7,11,15], 4, true);
 		this.guy4.animations.add('down', [0,4,8,12], 4, true);
@@ -81,6 +83,7 @@ var GameState = {
 			this.guys[a].body.collideWorldBounds = true;
 			this.guys[a].scale.setTo(0.75);
 			this.guys[a].body.immovable = true;
+			//this.guys[a].body.collideWorldBounds = true;
 			//this.guys[a].body.velocity.x = -10;
 		}
 
@@ -92,9 +95,9 @@ var GameState = {
 		// these are the objects
 		this.milk = this.game.add.sprite(1, 64, 'milk');
 		this.milk.collected = false;
-		this.medicine = this.game.add.sprite(this.world.width - 34, 32 * 6, 'medicine');
+		this.medicine = this.game.add.sprite(1024 - 34, 32 * 6, 'medicine');
 		this.medicine.collected = false;
-		this.cola = this.game.add.sprite(this.world.width - 35, 64, 'cola');
+		this.cola = this.game.add.sprite(1024 - 35, 64, 'cola');
 		this.cola.collected = false;
 		this.berries = this.game.add.sprite(0, 32 * 6, 'berries');
 		this.berries.collected = false;
@@ -108,6 +111,18 @@ var GameState = {
 		this.collectedAll = false;
 
 
+		// the sounds
+		this.collectSound = this.game.add.audio('collect');
+		this.playerDeath = this.game.add.audio('playerDeath');
+		this.backgroundMusic = this.game.add.audio('backgroundMusic');
+		this.backgroundMusic.play();
+		this.game.time.events.repeat(3000, 1000000000, this.move, this);
+		this.dooropen = this.game.add.audio('dooropen');
+
+		// the goal after collecting all items
+		this.payment = this.game.add.sprite(1024 - 160, this.world.height - 32, 'counter');
+		this.game.physics.arcade.enable(this.payment);
+		this.payment.body.immovable = true;
 
 		//enable physics for the items
 		this.game.physics.arcade.enable(this.items);
@@ -118,21 +133,33 @@ var GameState = {
 		// creates the control keys
 		this.cursor = this.game.input.keyboard.createCursorKeys();
 
-		this.game.time.events.repeat(3000, 1000000000, this.move, this);
+		this.game.time.events.repeat(177000, 1000000000, this.restartMusic, this);
 
 	},
 
 	update: function() {
 
-		this.game.physics.arcade.collide(this.person,this.collison);
+		//this.game.physics.arcade.collide(this.person,this.collison);
 
 		if(this.game.physics.arcade.collide(this.person, this.guys)) {
-			alert('Game Over');
-			this.game.state.restart();
+			// if(this.person.lives > 0) {
+			// 	this.person.lives = this.person.lives -1;
+			// 	this.person.timepenalty += 10;
+			// }
+			// else {
+				this.backgroundMusic.stop();
+				this.playerDeath.play();
+
+				alert('Game Over. Did not collect all items');
+				this.game.state.restart();	
+			// }
+			
 		}
 
-		if(this.collectedAll) {
-			alert('You collected all items');
+		if(this.game.physics.arcade.collide(this.person,this.payment) && this.collectedAll) {
+			this.backgroundMusic.stop();
+			this.dooropen.play();
+			alert('You finished shopping within ' + Math.trunc(this.game.time.totalElapsedSeconds()) + ' Seconds');
 			this.game.state.restart();
 		}
 
@@ -188,6 +215,7 @@ var GameState = {
 	collectItem: function() {
 		for(let i = 0; i < this.items.length; i++) {
 			if(this.itemsCollected[i] == false && this.game.physics.arcade.collide(this.person,this.items[i])) {
+				this.collectSound.play();
 				this.items[i].kill();
 				this.itemsCollected[i] = true;
 			}
@@ -200,5 +228,13 @@ var GameState = {
 			}
 		}
 		this.collectedAll = true;
-	} 
+	},
+	restartMusic: function() {
+		this.backgroundMusic.play();
+	},
+	render: function() {
+		this.game.debug.text('Elapsed Seconds: ' + this.game.time.totalElapsedSeconds(), 800, 32);
+		// this.game.debug.text('Lives: ' + this.person.lives, 1100, 64);
+		// this.game.debug.text('Time Penalty: ' + this.person.timepenalty, 1100, 96);
+	}
 }

@@ -20,6 +20,15 @@ var PreloadState = {
 		this.load.image('medicine', 'assets/images/medicine.png');
 		this.load.image('tomato', 'assets/images/tomato.png');
 		this.load.image('fruits', 'assets/images/fruits.png');
+
+		//sounds 
+		this.load.audio('collect','assets/sound/sword.mp3');
+		this.load.audio('playerDeath', 'assets/sound/player_death.wav');
+		this.load.audio('backgroundMusic', 'assets/sound/background.mp3');
+		this.load.audio('dooropen', 'assets/sound/door_open.wav');
+
+		// goal
+		this.load.image('counter', 'assets/images/payment.png');
 	},
 
 	create: function() {
