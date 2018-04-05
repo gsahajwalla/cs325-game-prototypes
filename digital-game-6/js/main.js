@@ -1,4 +1,4 @@
-var game = new Phaser.Game(500, 600, Phaser.CANVAS,'game');
+var game = new Phaser.Game(1024, 608, Phaser.CANVAS,'game');
 
 game.state.add('GameState', GameState);
 game.state.add('Menu', Menu);
