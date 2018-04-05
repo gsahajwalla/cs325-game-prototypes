@@ -2,7 +2,7 @@ var PreloadState = {
 
 	preload: function() {
 		// this is character the player will play as
-		this.game.load.spritesheet('person', 'assets/images/person1.png', 41, 43, 16, 5, 5);
+		this.game.load.spritesheet('person', 'assets/images/person1.png', 41, 42, 16, 5, 5);
 		// this is menu button 
 		this.game.load.image('startButton', 'assets/images/button.png');
 
@@ -11,7 +11,7 @@ var PreloadState = {
 		this.load.tilemap('store1', 'assets/Maps/level1.json', null, Phaser.Tilemap.TILED_JSON);
 
 		// the villians
-		this.load.spritesheet('guy','assets/images/guy.png', 41, 43, 16, 5, 5);
+		this.load.spritesheet('guy','assets/images/guy.png', 41, 42, 16, 5, 5);
 
 		// the objects to be collected
 		this.load.image('milk', 'assets/images/milk.png');
@@ -19,6 +19,7 @@ var PreloadState = {
 		this.load.image('berries', 'assets/images/berries.png');
 		this.load.image('medicine', 'assets/images/medicine.png');
 		this.load.image('tomato', 'assets/images/tomato.png');
+		this.load.image('fruits', 'assets/images/fruits.png');
 	},
 
 	create: function() {
