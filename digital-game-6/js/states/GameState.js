@@ -150,8 +150,8 @@ var GameState = {
 				this.backgroundMusic.stop();
 				this.playerDeath.play();
 
-				alert('Game Over. Did not collect all items');
-				this.game.state.restart();	
+				alert('Game Over. Did not collect all items. Refresh to restart');
+				//this.game.state.restart();	
 			// }
 			
 		}
@@ -159,8 +159,8 @@ var GameState = {
 		if(this.game.physics.arcade.collide(this.person,this.payment) && this.collectedAll) {
 			this.backgroundMusic.stop();
 			this.dooropen.play();
-			alert('You finished shopping within ' + Math.trunc(this.game.time.totalElapsedSeconds()) + ' Seconds');
-			this.game.state.restart();
+			alert('You finished shopping within ' + Math.trunc(this.game.time.totalElapsedSeconds()) + ' Seconds. Refresh to restart');
+			//this.game.state.restart();
 		}
 
 		this.person.body.velocity.x = 0;
