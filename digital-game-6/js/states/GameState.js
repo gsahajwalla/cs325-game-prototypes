@@ -139,7 +139,7 @@ var GameState = {
 
 	update: function() {
 
-		//this.game.physics.arcade.collide(this.person,this.collison);
+		this.game.physics.arcade.collide(this.person,this.collison);
 
 		if(this.game.physics.arcade.collide(this.person, this.guys)) {
 			// if(this.person.lives > 0) {
