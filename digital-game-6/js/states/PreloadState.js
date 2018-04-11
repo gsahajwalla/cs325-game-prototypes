@@ -33,6 +33,7 @@ var PreloadState = {
 
 	create: function() {
 		
+		
 		this.game.state.start('Menu');
 	}
 

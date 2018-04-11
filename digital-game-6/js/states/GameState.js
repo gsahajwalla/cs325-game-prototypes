@@ -2,7 +2,8 @@ var GameState = {
 
 	create: function() {
 
-		
+		this.name = prompt("Enter you name");
+		this.score = 0;
 		// starts the physics system
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -35,6 +36,8 @@ var GameState = {
 		// guys (villian)
 		// guy 1
 		this.guy1 = this.game.add.sprite(64,64,'guy',0);
+		this.text = game.add.text(0, -10, "Some text", {font: "16px Arial", fill: "#ffffff"});
+		this.guy1.addChild(this.text);
 		this.guy1.animations.add('left', [1,5,9,13], 4, true);
 		this.guy1.animations.add('right', [3,7,11,15], 4, true);
 		this.guy1.animations.add('down', [0,4,8,12], 4, true);
@@ -218,6 +221,8 @@ var GameState = {
 				this.collectSound.play();
 				this.items[i].kill();
 				this.itemsCollected[i] = true;
+				this.score = this.score + 10;
+				console.log(this.score);
 			}
 		}
 	},
