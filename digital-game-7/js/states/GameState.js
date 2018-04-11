@@ -2,8 +2,8 @@ var GameState = {
 
 	create: function() {
 
-		//this.name = prompt("Enter you name");
-		//this.score = 0;
+		this.name = prompt("Enter you name");
+		this.score = 0;
 		// starts the physics system
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -221,8 +221,8 @@ var GameState = {
 				this.collectSound.play();
 				this.items[i].kill();
 				this.itemsCollected[i] = true;
-				//this.score = this.score + 10;
-				//console.log(this.score);
+				this.score = this.score + 10;
+				console.log(this.score);
 			}
 		}
 	},
