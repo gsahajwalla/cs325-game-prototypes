@@ -94,7 +94,7 @@ var Level2 = {
 		this.guy1.animations.add('up', [2,6,10,14], 4, true);
 		
 		// guy 2
-		this.guy2 = this.game.add.sprite(this.world.width - (11 * 32),64,'guy',0);
+		this.guy2 = this.game.add.sprite(this.world.width - (11 * 32),75,'guy',0);
 		this.guy2.animations.add('left', [1,5,9,13], 4, true);
 		this.guy2.animations.add('right', [3,7,11,15], 4, true);
 		this.guy2.animations.add('down', [0,4,8,12], 4, true);
@@ -108,7 +108,7 @@ var Level2 = {
 		this.guy3.animations.add('up', [2,6,10,14], 4, true);
 		//this.guy3.animations.play('left');
 		//guy 4
-		this.guy4 = this.game.add.sprite(this.world.width - (11 * 32),32 * 10,'guy',0);
+		this.guy4 = this.game.add.sprite(this.world.width - (11 * 32),32 * 11,'guy',0);
 		this.guy4.animations.add('left', [1,5,9,13], 4, true);
 		this.guy4.animations.add('right', [3,7,11,15], 4, true);
 		this.guy4.animations.add('down', [0,4,8,12], 4, true);
