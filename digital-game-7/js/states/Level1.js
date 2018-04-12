@@ -28,7 +28,7 @@ var Level1 = {
 		this.person = this.game.add.sprite(0,595,'person', 0);
 		this.person.lives = 5;
 		this.person.timepenalty = 0;
-		this.person.scale.setTo(.5);
+		this.person.scale.setTo(.6);
 		this.game.physics.arcade.enable(this.person);
 		this.person.body.collideWorldBounds = true;
 
