@@ -25,7 +25,7 @@ var PreloadState = {
 		this.load.image('medicine', 'assets/images/medicine.png');
 		this.load.image('tomato', 'assets/images/tomato.png');
 		this.load.image('fruits', 'assets/images/fruits.png');
-		this.load.image('apple', 'assets/images/apple.png');
+		this.load.image('apple', 'assets/images/apples.png');
 		this.load.image('cheese', 'assets/images/cheese.png');
 		this.load.image('lemon', 'assets/images/lemon.png');
 		this.load.image('carrots', 'assets/images/carrot.png');
