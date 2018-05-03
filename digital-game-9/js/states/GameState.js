@@ -72,16 +72,16 @@ var GameState = {
 		this.player.body.velocity.y = 0;
 
 		if (this.cursor.left.isDown) {
-			this.player.body.velocity.x = -500;
+			this.player.body.velocity.x = -200;
 		}
 		else if (this.cursor.right.isDown) {
-			this.player.body.velocity.x = 500;
+			this.player.body.velocity.x = 200;
 		}
 		else if (this.cursor.down.isDown) {
-			this.player.body.velocity.y = 500;
+			this.player.body.velocity.y = 200;
 		}
 		else if (this.cursor.up.isDown) {
-			this.player.body.velocity.y = -500;
+			this.player.body.velocity.y = -200;
 		}
 		else {
 			this.player.animations.stop();
